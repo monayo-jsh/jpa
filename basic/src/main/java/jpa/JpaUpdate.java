@@ -1,6 +1,7 @@
 package jpa;
 
 import domain.Member;
+import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -23,15 +24,11 @@ public class JpaUpdate {
         try {
             Member findMember = entityManager.find(Member.class, 1L);
 
-            if(findMember == null) {
-                findMember = new Member();
-                findMember.setId(1L);
-                findMember.setName("member1");
+            findMember.setName("member2 modify");
 
-                entityManager.persist(findMember);
-            }
-
-            findMember.setName("member2");
+            LocalDateTime now = LocalDateTime.now();
+            findMember.setCreateDate(now);
+            findMember.setLastModifiedDate(now);
 
             //dirty check를 통해 변경된 내용은 jpa 인터페이스에서 업데이트 쿼리를 수행
             //entityManager.persist(findMember);

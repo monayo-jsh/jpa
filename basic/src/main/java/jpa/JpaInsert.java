@@ -1,6 +1,8 @@
 package jpa;
 
 import domain.Member;
+import domain.RoleType;
+import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -22,8 +24,15 @@ public class JpaInsert {
 
         try {
             Member member = new Member();
-            member.setId(0L);
-            member.setName("member1");
+            member.setId(1L);
+            member.setName("member123456");
+            member.setRoleType(RoleType.NORMAL);
+            member.setAge(20);
+            member.setDescription("description..");
+
+            LocalDateTime now = LocalDateTime.now();
+            member.setCreateDate(now);
+            member.setLastModifiedDate(now);
 
             System.out.println("before persist");
             entityManager.persist(member);
