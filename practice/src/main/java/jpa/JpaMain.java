@@ -19,7 +19,7 @@ public class JpaMain {
 
         tx.begin();
         try {
-
+            
             tx.commit();
         } catch(Exception e) {
             e.printStackTrace();
