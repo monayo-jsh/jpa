@@ -1,9 +1,12 @@
 package learn;
 
+import com.sun.tools.javac.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import learn.domain.Member;
+import learn.domain.common.Address;
 
 public class JpaMain {
 
@@ -19,6 +22,24 @@ public class JpaMain {
 
         tx.begin();
         try {
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setAddress(new Address("city", "street", "zipcode"));
+
+            member.getFavoriteFoods().addAll(
+                List.of("치킨", "족발", "피자")
+            );
+
+            member.getAddressHistory().addAll(
+              List.of(
+                  new Address("city1", "street1", "zipcode1"),
+                  new Address("city2", "street2", "zipcode2"),
+                  new Address("city3", "street3", "zipcode3")
+              )
+            );
+
+            entityManager.persist(member);
 
             tx.commit();
         } catch(Exception e) {
