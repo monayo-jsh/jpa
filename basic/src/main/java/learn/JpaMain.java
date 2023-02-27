@@ -7,6 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import learn.domain.Member;
 import learn.domain.common.Address;
+import learn.domain.common.AddressEntity;
 
 public class JpaMain {
 
@@ -33,9 +34,9 @@ public class JpaMain {
 
             member.getAddressHistory().addAll(
               List.of(
-                  new Address("city1", "street1", "zipcode1"),
-                  new Address("city2", "street2", "zipcode2"),
-                  new Address("city3", "street3", "zipcode3")
+                  new AddressEntity(new Address("city1", "street1", "zipcode1")),
+                  new AddressEntity(new Address("city2", "street2", "zipcode2")),
+                  new AddressEntity(new Address("city3", "street3", "zipcode3"))
               )
             );
 
@@ -50,7 +51,7 @@ public class JpaMain {
             findMember.setAddress(new Address("city modify", "street modify", "zipcode modify"));
             //findMember.getAddressHistory().remove(2);
             //equals를 통해 객체 삭제
-            findMember.getAddressHistory().remove(new Address("city2", "street2", "zipcode2"));
+            findMember.getAddressHistory().remove(0);
 
             //컬렉션이므로 해당하는 데이터를 삭제, 추가 처리
             findMember.getFavoriteFoods().remove("치킨");
