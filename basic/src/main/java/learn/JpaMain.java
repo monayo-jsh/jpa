@@ -24,7 +24,7 @@ public class JpaMain {
         try {
 
             Member member = new Member();
-            member.setName("member1");
+            member.setName("member2");
             member.setAddress(new Address("city", "street", "zipcode"));
 
             member.getFavoriteFoods().addAll(
@@ -40,6 +40,15 @@ public class JpaMain {
             );
 
             entityManager.persist(member);
+
+            entityManager.flush();
+            entityManager.clear();
+
+            Member findMember = entityManager.find(Member.class, 7L);
+
+            findMember.getAddressHistory().remove(2);
+
+            entityManager.persist(findMember);
 
             tx.commit();
         } catch(Exception e) {
