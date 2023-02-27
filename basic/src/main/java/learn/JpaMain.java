@@ -56,6 +56,10 @@ public class JpaMain {
                 )
             );
 
+            //컬렉션이므로 해당하는 데이터를 삭제, 추가 처리
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
             entityManager.persist(findMember);
 
             tx.commit();
