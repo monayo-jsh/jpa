@@ -44,9 +44,17 @@ public class JpaMain {
             entityManager.flush();
             entityManager.clear();
 
-            Member findMember = entityManager.find(Member.class, 7L);
+            Member findMember = entityManager.find(Member.class, member.getId());
 
-            findMember.getAddressHistory().remove(2);
+            //잘못된 설정 신규 객체로 변경하는게 옳다.
+            findMember.setAddress(new Address("city modify", "street modify", "zipcode modify"));
+            //findMember.getAddressHistory().remove(2);
+            findMember.setAddressHistory(
+                List.of(
+                    new Address("city1", "street1", "zipcode1"),
+                    new Address("city2", "street2", "zipcode2")
+                )
+            );
 
             entityManager.persist(findMember);
 
