@@ -49,12 +49,8 @@ public class JpaMain {
             //잘못된 설정 신규 객체로 변경하는게 옳다.
             findMember.setAddress(new Address("city modify", "street modify", "zipcode modify"));
             //findMember.getAddressHistory().remove(2);
-            findMember.setAddressHistory(
-                List.of(
-                    new Address("city1", "street1", "zipcode1"),
-                    new Address("city2", "street2", "zipcode2")
-                )
-            );
+            //equals를 통해 객체 삭제
+            findMember.getAddressHistory().remove(new Address("city2", "street2", "zipcode2"));
 
             //컬렉션이므로 해당하는 데이터를 삭제, 추가 처리
             findMember.getFavoriteFoods().remove("치킨");

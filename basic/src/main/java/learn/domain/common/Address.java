@@ -1,5 +1,6 @@
 package learn.domain.common;
 
+import java.util.Objects;
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -15,6 +16,24 @@ public class Address {
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Address address = (Address) o;
+        return city.equals(address.city) && street.equals(address.street)
+            && zipcode.equals(address.zipcode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(city, street, zipcode);
     }
 
     public String getCity() {
