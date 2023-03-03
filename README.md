@@ -422,3 +422,35 @@
 						* 일대다 관계를 위한 엔티티를 만들고, 여기에서 값 타입을 사용
 						* 영속성 전이(Cascade) + 고아 객체 제거를 사용해서 값 타입 컬렉션처럼 사용
 						* ex) AddressEntity
+
+* 객체지향 쿼리 언어(JPQL)
+	1. JPQL (객체지향 쿼리 언어)
+	    : 가장 단순한 조회 방법
+	     * EntityManager.find()
+	     * 객체 그래프 탐색 => a.getB().getC()
+	     * JPA를 사용하면 엔티티 객체를 중심으로 개발
+	     * 테이블이 아닌 엔티티 객체를 대상으로 검색
+	     * 모든 DB 데이터를 객체로 변환해서 검색하는 것은 불가능
+	     * 애플리케이션이 필요한 데이터만 DB에서 불러오려면 결국 검색 조건이 포함된 SQL 필요
+	     * ANSI 표준 문법 SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원
+	     * 테이블이 아닌 객체를 대상으로 검색하는 객체 지향 쿼리
+	     * SQL을 추상화해서 특정 데이터베이스 SQL에 의존 X
+	2. Criteria
+	    : 자바 코드로 JPQL 작성
+	    * JPQL 빌더 역할, JPA 공식 기능 
+	    * 너무 복잡하고 실용성이 없다.
+	    * 따라서 QueryDSL 사용 권장
+	3. QueryDSL
+	    : 자바 코드로 JPQL 작성
+	    * JPQL 빌더 역할
+	    * 컴파일 시점에 문법 오류를 찾을 수 있음
+	    * 동적 쿼리 작성이 편리함
+	    * 단순하고 쉬워 실무 사용 권장
+	4. 네이티브 SQL
+	    : JPA가 제공하는 SQL을 직접 사용하는 기능
+	    * JPQL로 해결할 수 없는 특정 데이터베이스에 의존적인 기능
+	    * ex) Oracle CONNECT BY, 특정 DB만 사용하는 SQL 힌트 등
+	5. JDBC 직접 사용, SpringJdbcTemplate 등
+	    : JPA를 사용하면서 JDBC 커넥션을 직접 사용하거나, 스프링 JdbcTemplate, 마이바티스 등을 함께 사용 가능
+	    * 영속성 컨텍스트를 적절한 시점에 강제로 flush 필요 !
+	    * ex) JPA를 우회해서 SQL을 실행하기 직전에 영속성 컨텍스트 수동 flush
