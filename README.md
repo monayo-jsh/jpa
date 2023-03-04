@@ -454,3 +454,43 @@
 	    : JPA를 사용하면서 JDBC 커넥션을 직접 사용하거나, 스프링 JdbcTemplate, 마이바티스 등을 함께 사용 가능
 	    * 영속성 컨텍스트를 적절한 시점에 강제로 flush 필요 !
 	    * ex) JPA를 우회해서 SQL을 실행하기 직전에 영속성 컨텍스트 수동 flush
+	* JPQL (Java Persistence Query Language)
+		* 기본 문법
+			* 엔티티와 속성은 대소문자 구분
+			* 키워드는 대소문자 구분 X (SELECT, FROM, where)
+			* 엔티티 이름 사용, 테이블 이름이 아님 !
+			* 별칭은 필수 (as 생략 가능)
+			* count, sum, avg, max, min
+			* group by, having, order by
+			* TypeQuery
+				* 반환 타입이 명확할 때 사용
+				  ```
+				  TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+					```
+			* Query
+				* 반환 타입이 명확하지 않을 때 사용
+				  ```
+				  Query query = em.createQuery("select m.username, m.age from Member m");
+					```
+		* 결과 조회 API
+			* query.getSingleResult()
+				* 결과가 정확히 하나일 때
+				* 단일 객체 반환
+				* 결과가 없으면 : javax.persistence.NoResultException
+				* 둘 이상이면 : javax.persistence.NonUniqueResultException
+			  
+			* query.getResultList()
+				* 결과가 하나 이상일 때
+				* 리스트 반환 
+				* 결과가 없으면 빈 리스트 반환
+		* 파라미터 바인딩
+			* 이름 기반
+			```
+			TypedQuery<Member> query = em.createQuery("select m from Member m where m.age = :age");
+			query.setParamter("age", 10);
+			```
+			* 위치 기반은 포지션 위치를 기준으로 사용
+			```
+			TypedQuery<Member> query = em.createQuery("select m from Member m where m.age = ?1");
+			query.setParamter(1, 10);
+			```
