@@ -494,3 +494,30 @@
 			TypedQuery<Member> query = em.createQuery("select m from Member m where m.age = ?1");
 			query.setParamter(1, 10);
 			```
+			
+		* 프로젝션
+			* select 절에 조회할 대상을 지정하는 것
+			* 대상 : 엔티티, 임베디드 타입, 스칼라 타입(숫자, 문자 등 기본데이터 타입)
+			* select m from Member m => 엔티티 프로젝션
+			* select m.team from Member m => 엔티티 프로젝션 (결과가 TEAM 엔티티)
+			* select m.address from Member m => 임베디드 타입 프로젝션
+			* select m.username, m.age from Member m => 스칼라 타입 프로젝션
+			* distinct로 중복 제거 가능
+			* 여러값 조회
+				```
+				select m.username, m.age from Member m
+				```
+				* Query 타입으로 조회
+				* Object[] 타입으로 조회
+				  ```
+				  List<Object[]> result = call query..
+				  username = result[0];
+				  userage = result[1];
+					```
+				* new 명령어로 조회
+					* 단순 값을 DTO로 바로 조회
+					  ```
+					  select new domain.MemberDTO(m.username, m.age) from Member m
+						```
+					* 패키지 명을 포함한 전체 클래스 명 입력
+					* 순서와 타입이 일치하는 생성자 필요
