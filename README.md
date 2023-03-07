@@ -521,3 +521,12 @@
 						```
 					* 패키지 명을 포함한 전체 클래스 명 입력
 					* 순서와 타입이 일치하는 생성자 필요
+		* 페이징 API
+			* setFirstResult(int startPosition) : 조회 시작 위치(0부터 시작)
+			* setMaxResult(int maxResult) : 조회할 데이터 수
+			```
+			List<Member> members = entityManager.createQuery("select m from Member m order by m.id desc", Member.class)
+            	                        .setFirstResult(10)
+                	                    .setMaxResults(10)
+                    	                .getResultList();
+			```
