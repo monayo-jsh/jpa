@@ -48,6 +48,16 @@ public class JPQLJoinMain {
             List<Member> setaJoinResults = entityManager.createQuery(setaJoin, Member.class)
                                                         .getResultList();
 
+
+
+            String joinOn = "select m from Member m join m.team t on t.name = 'A'";
+            List<Member> joinOnResults = entityManager.createQuery(joinOn, Member.class)
+                                                      .getResultList();
+
+            String notRelationJoinOn = "select m from Member m left join Team t on m.username = t.name";
+            List<Member> notRelationJoinOnResults = entityManager.createQuery(notRelationJoinOn, Member.class)
+                                                                 .getResultList();
+
             tx.commit();
         } catch(Exception e) {
             e.printStackTrace();

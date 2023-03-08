@@ -543,3 +543,14 @@
 			```
 			select m from Member m, Team t where m.username = t.name
 			```
+			*  ON 절
+				* ON절을 활용한 조인(JPA 2.1부터 지원)
+					* 조인 대상 필터링
+					  ex) 회원과 팀을 조인하면서 팀 이름이 A인 팀만 조인
+					```
+					select m from Member m join m.team t on t.name = 'A'
+					```
+					* 연관관계 없는 엔티티 외부 조인(하이버네이크 5.1부터)
+					```
+					select m from Member m left join Team t on m.username = t.name
+					```
