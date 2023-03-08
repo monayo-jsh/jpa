@@ -530,3 +530,16 @@
                 	                    .setMaxResults(10)
                     	                .getResultList();
 			```
+		* 조인
+			* 내부 조인 (inner)
+			```
+			select m from Member m join m.team t
+			```
+			* 외부 조인 (outer)
+			```
+			select m from Member m left join m.team t
+			```
+			* 세타 조인
+			```
+			select m from Member m, Team t where m.username = t.name
+			```
