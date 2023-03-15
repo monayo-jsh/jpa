@@ -598,3 +598,23 @@
 			* AND, OR, NOT
 			* =, >, >=, <, <=, <>
 			* BETWEEN, LIKE, IS NULL
+		* 조건식
+				* CASE
+					* 기본 CASE
+						```
+						select case when m.age <= 10 then '학생요금' else '일반요금' end from Member m
+						```
+					* 단순 CASE
+						```
+						select case when t.name when 'teamA' then '인센티브110%' else '인센티브 100%' end from Team t
+						```
+					* COALESCE 
+					  : 하나씩 조회해서 null이 아니면 반환
+					  ```
+					  select coalesce(m.username, '알 수 없는 회원') from Member m
+						```
+					* NULLIF
+					  : 두 값이 같으면 NULL 반환, 다르면 첫번째 값 반환
+					  ```
+					  select nullif(m.username, '관리자') from Member m
+						```
