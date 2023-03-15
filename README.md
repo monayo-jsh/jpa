@@ -645,3 +645,53 @@
 				//dialect에 사용자 함수 등록 후 호출
 				select function('group_concat', m.username) from Member m
 				```
+		* 경로 표현식
+				* .(점)을 찍어 객체 그래프를 탐색하는 것
+				```
+				select m.username -> 상태 필드
+				from Member m
+				join m.team t -> 단일 값 연관 필드
+				join m.orders o -> 컬렉션 값 연관 필드
+				where t.name = '팀A'
+				```
+				* 상태 필드(state field)
+					* 단순히 값을 저장하기 위한 필드 (ex : m.username)
+					* 경로 탐색의 끝, 탐색 X
+					```
+					select m.username from Member m
+					```
+				* 연관 필드(association field)
+					* 연관 관계를 위한 필드
+					* 단일 값 연관 필드
+						* @ManyToOne, @OneToOne, 대상이 엔티티(ex: m.team)
+						* 묵시적 내부 조인(inner join) 발생, 탐색 O
+						```
+						select m.team.name from Member m
+						```
+					* 컬렉션 값 연관 필드
+						* @OneToMany, @ManyToMany, 대상이 컬렉션(ex: m.orders)
+						* 묵시적 내부 조인 발생, 탐색 X
+						```
+						select m.team.members from Member m
+						select m.team.members.size from Member m //컬렉션의 크기는 가져올 수 있음
+						```
+						* from 절에서 명시적 조인을 통해 별칭을 얻으면 별칭을 통해 탐색 가능
+					* 묵시적 내부 조인이 발생하지 않도록 쿼리를 작성하여 명시적으로 사용할 것을 권장
+			* 명시적 조인
+				* join 키워드를 직접 사용
+				```
+				select m, t from Member m join m.team t
+				```
+			* 묵시적 조인
+				* 경로 표현식에 의해 묵시적으로 SQL JOIN 발생 (내부 조인만 가능)
+				```
+				select m.team from Member m
+				```
+				* 주의사항
+					* 항상 내부 조인
+					* 컬렉션은 경로 탐색의 끝, 명시적 조인을 통해 별칭을 얻으면 가능
+					* 경로 탐색은 주로 SELECT, WHERE 절에서 사용하지만, 묵시적 조인으로 인해 SQL의 FROM (JOIN) 절에 영향을 줌
+			* 실무 조언
+				* 가급적 묵시적 조인 대신에 명시적 조인 사용
+				* 조인은 SQL 튜닝에 중요 포인트
+				* 묵시적 조인은 조인이 일어나는 상황을 한눈에 파악하기 어려움
