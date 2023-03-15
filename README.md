@@ -618,3 +618,30 @@
 					  ```
 					  select nullif(m.username, '관리자') from Member m
 						```
+		* JPQL 기본 함수
+				* CONCAT
+				```
+				select concat(m.username, m.age) from Member m
+				select m.username || m.age from Member m
+				```
+				* SUBSTRING
+				```
+				select substring(m.username, 0, 3) from Member m
+				```
+				* TRIM
+				* LOWER, UPPER
+				* LENGTH
+				* LOCATE
+				```
+				select locate('de', 'abcdefg') from Member m
+				```
+				* ABS, SQRT, MOD
+				* SIZE, INDEX(JPA 용도)
+				```
+				select size(t.members) from Team t
+				```
+				* 사용자 정의 함수
+				```
+				//dialect에 사용자 함수 등록 후 호출
+				select function('group_concat', m.username) from Member m
+				```
