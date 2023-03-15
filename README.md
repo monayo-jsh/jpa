@@ -778,3 +778,29 @@
 							```
 							select i.* from Item i where i.dtype = 'B' and i.auther = 'kim'
 							```
+			* 엔티티 직접 사용
+				* 기본 키 값
+					* JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본 키 값을 사용
+					* JPQL
+						```
+						select count(m.id) from Member m //엔티티의 아이디를 사용
+						select count(m) from Member m //엔티티를 직접 사용
+						```
+					* SQL
+						```
+						select count(m.id) as cnt from Member m //JPQL 둘 다 같은 SQL 실행됨
+						```
+					* 엔티티를 파라미터로 전달
+						```
+						select m from Member m where m = :member
+						setParameter("member", member);
+						```
+					* 식별자를 직접 전달
+						```
+						select m from Member m where m.id = :memberId
+						setParameter("memberId", memberId)
+						```
+					* 실행된 SQL
+						```
+						select m.* from Member m where m.id = ?
+						```
