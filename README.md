@@ -711,3 +711,28 @@
 					```
 					select M.*, T.* from Member m inner join Team t ON m.team_id = t.id
 					```
+			* 컬렉션 패치 조인
+				* 일대다 관계, 컬렉션 패치 조인
+				* JPQL
+					```
+					select t from Team t join fetch t.members where t.name = '팀A'
+					```
+				* SQL
+					```
+					select T.*, M.* from Team t inner join Member m ON t.id = m.team_id where t.name = '팀A'
+					```
+				* JPA 관점에서는 쿼리 결과를 그대로 전달받기때문에 "팀A" 만큼 반환하게 된다.
+				* 팀A는 영속성 컨텍스트에 1개이며 동일한 객체를 반환
+				* distinct 기능
+					* sql의 distinct 기능 제공 (중복 제거)
+					* 애플리케이션에서 엔티티 중복 제거
+					* 같은 식별자를 가진 Team 엔티티 제거
+			* 패치 조인과 일반 조인의 차이
+				* JPQL은 결과를 반환할 때 연관관계 고려하지 않음
+				* 단지 SELECT 절에 지정한 엔티티만 조회해서 반환할 뿐
+				* 팀 엔티티만 조회하고, 회원 엔티티는 조회 X
+				```
+				select t from Team t join t.members m
+				```
+				* 패치 조인을 사용할 때만 연관된 엔티티도 함께 조회 (즉시 로딩)
+				* 패치 조인은 객체 그래프를 SQL 한번에 조회하는 개념
