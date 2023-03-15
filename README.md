@@ -804,3 +804,24 @@
 						```
 						select m.* from Member m where m.id = ?
 						```
+			* Named 쿼리
+				* 정적 쿼리
+				* 미리 정의해서 이름을 부여해두고 사용하는 JPQL
+				* 어노테이션, XML에 정의
+				* 애플리케이션 로딩 시점에 초기화 후 재사용
+				* 애플리케이션 로딩 시점에 쿼리를 검증
+				```
+				//정의 방법
+				@Entity
+				@NamedQuery(
+					name = "Member.findByUsername"
+					query = "select m from Member m where m.username = :username"
+				)
+				public class Member {
+					...
+				}
+
+				//사용 방법
+				entityManager.createNamedQuery("Member.findByUsername", Member.class)
+							.setParameter("username", "회원1")
+				```
