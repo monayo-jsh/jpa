@@ -695,3 +695,19 @@
 				* 가급적 묵시적 조인 대신에 명시적 조인 사용
 				* 조인은 SQL 튜닝에 중요 포인트
 				* 묵시적 조인은 조인이 일어나는 상황을 한눈에 파악하기 어려움
+			
+			* 패치 조인  (fetch join)
+				* SQL 조인이 아님
+				* JPQL에서 성능 최적화를 위해 제공하는 기능
+				* 연관된 엔티티나 컬렉션을 SQL 한 번에 함께 조회하는 기능
+				* join fetch 명령어 사용
+				* 패치 조인 ::= [ LEFT [OUTER] | INNER ] JOIN FETCH 조인 경로
+				* 회원을 조회하면서 연관된 팀도 함께 조회 (SQL 한 번에)
+				* JPQL
+					```
+					select m from Member m join fetch m.team
+					```
+				* SQL
+					```
+					select M.*, T.* from Member m inner join Team t ON m.team_id = t.id
+					```
