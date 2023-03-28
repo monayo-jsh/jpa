@@ -1,6 +1,7 @@
 package study.datajpa.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,26 +15,24 @@ import study.datajpa.entity.Team;
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-class TeamJpaRepositoryTest {
+class TeamRepositoryTest {
 
     @Autowired
-    TeamJpaRepository teamJpaRepository;
-
+    TeamRepository teamRepository;
 
     @Test
     void basicCRUD() {
-
         //C
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
         Team teamC = new Team("teamC");
 
-        teamJpaRepository.save(teamA);
-        teamJpaRepository.save(teamB);
-        teamJpaRepository.save(teamC);
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        teamRepository.save(teamC);
 
         //R
-        Optional<Team> findOptionalTeam = teamJpaRepository.findById(teamA.getId());
+        Optional<Team> findOptionalTeam = teamRepository.findById(teamA.getId());
 
         assertThat(findOptionalTeam.isPresent()).isTrue();
 
@@ -42,24 +41,23 @@ class TeamJpaRepositoryTest {
         assertThat(findTeam.getId()).isEqualTo(teamA.getId());
         assertThat(findTeam.getName()).isEqualTo(teamA.getName());
 
-        long count = teamJpaRepository.count();
+        long count = teamRepository.count();
         assertThat(count).isEqualTo(3);
 
-        List<Team> teams = teamJpaRepository.findAll();
+        List<Team> teams = teamRepository.findAll();
 
         for(Team team : teams) {
             System.out.println("team = " + team);
         }
 
         //D
-        teamJpaRepository.delete(teamB);
+        teamRepository.delete(teamB);
 
-        Optional<Team> deleteOptionalTeam = teamJpaRepository.findById(teamB.getId());
+        Optional<Team> deleteOptionalTeam = teamRepository.findById(teamB.getId());
 
         assertThat(deleteOptionalTeam.isEmpty()).isTrue();
 
-        count = teamJpaRepository.count();
+        count = teamRepository.count();
         assertThat(count).isEqualTo(2);
     }
-
 }
