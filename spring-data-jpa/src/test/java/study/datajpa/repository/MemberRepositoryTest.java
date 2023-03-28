@@ -2,6 +2,7 @@ package study.datajpa.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,27 @@ class MemberRepositoryTest {
         assertThat(dbMember.getId()).isEqualTo(savedMember.getId());
         assertThat(dbMember.getUsername()).isEqualTo(savedMember.getUsername());
         assertThat(dbMember).isEqualTo(savedMember);
+    }
+
+    @Test
+    void testCustomQuery() {
+        Member memberA = new Member("memberA", 10);
+        Member memberB = new Member("memberA", 20);
+        Member memberC = new Member("memberA", 30);
+
+        memberRepository.save(memberA);
+        memberRepository.save(memberB);
+        memberRepository.save(memberC);
+
+        String username = "memberA";
+        List<Member> members = memberRepository.findByUsernameAndAgeGreaterThan(username, 10);
+
+        assertThat(members.size()).isEqualTo(2);
+
+        for(Member member : members) {
+            assertThat(member.getUsername()).isEqualTo(username);
+            assertThat(member.getAge()).isGreaterThan(10);
+        }
     }
 
 }
