@@ -144,4 +144,19 @@ class MemberRepositoryTest {
 
         assertThat(members.size()).isEqualTo(3);
     }
+
+    @Test
+    void testQueryNames() {
+        Member memberA = new Member("memberA", 10);
+        Member memberB = new Member("memberB", 20);
+        Member memberC = new Member("memberC", 30);
+
+        memberRepository.save(memberA);
+        memberRepository.save(memberB);
+        memberRepository.save(memberC);
+
+        List<Member> members = memberRepository.findByNames(List.of("memberA", "memberB"));
+
+        assertThat(members.size()).isEqualTo(2);
+    }
 }
