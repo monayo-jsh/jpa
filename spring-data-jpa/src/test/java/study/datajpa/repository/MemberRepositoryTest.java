@@ -14,7 +14,9 @@ import study.datajpa.entity.Member;
 @Transactional
 @Rollback(value = false)
 class MemberRepositoryTest {
-        @Autowired MemberRepository memberRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     void testMember() {
@@ -32,4 +34,5 @@ class MemberRepositoryTest {
         assertThat(dbMember.getUsername()).isEqualTo(savedMember.getUsername());
         assertThat(dbMember).isEqualTo(savedMember);
     }
+
 }
