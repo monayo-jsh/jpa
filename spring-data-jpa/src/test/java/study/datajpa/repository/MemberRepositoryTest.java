@@ -77,4 +77,25 @@ class MemberRepositoryTest {
             assertThat(member.getUsername()).isEqualTo(username);
         }
     }
+
+    @Test
+    void testQuery() {
+        String username = "memberA";
+
+        Member memberA = new Member(username, 10);
+        Member memberB = new Member(username, 20);
+        Member memberC = new Member(username, 30);
+
+        memberRepository.save(memberA);
+        memberRepository.save(memberB);
+        memberRepository.save(memberC);
+
+        List<Member> members = memberRepository.findUser(username, 10);
+
+        assertThat(members.size()).isEqualTo(1);
+
+        for(Member member : members) {
+            assertThat(member.getUsername()).isEqualTo(username);
+        }
+    }
 }
