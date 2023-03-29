@@ -159,4 +159,25 @@ class MemberRepositoryTest {
 
         assertThat(members.size()).isEqualTo(2);
     }
+
+
+    @Test
+    void testReturnType() {
+        String memberName = "memberA";
+        Member memberA = new Member(memberName, 10);
+        memberRepository.save(memberA);
+
+        List<Member> members = memberRepository.findMembersByUsername(memberName);
+
+        assertThat(members.size()).isEqualTo(1);
+
+        Member member = memberRepository.findMemberByUsername(memberName);
+
+        assertThat(member.getUsername()).isEqualTo(memberName);
+
+        Optional<Member> memberOptional = memberRepository.findOptionalMemberByUsername(memberName);
+
+        assertThat(memberOptional.isPresent()).isTrue();
+        assertThat(memberOptional.get().getUsername()).isEqualTo(memberName);
+    }
 }
