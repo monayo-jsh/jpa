@@ -237,5 +237,20 @@ class MemberRepositoryTest {
         assertThat(page.isFirst()).isTrue(); //첫번째 페이지 여부
         assertThat(page.hasNext()).isTrue(); //다음 페이지 여부
     }
-    
+
+    @Test
+    void testBulkUpdate() {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        //when
+        int resultCount = memberRepository.bulkAgePlus(20);
+
+        assertThat(resultCount).isEqualTo(3);
+    }
+
 }
