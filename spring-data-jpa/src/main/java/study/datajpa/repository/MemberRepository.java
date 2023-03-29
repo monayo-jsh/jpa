@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -59,4 +60,28 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
+
+    //fetch join
+    //개선 : @EntityGraph
+    @Query("select m from Member m left join fetch m.team")
+    List<Member> findMembersFetchJoin();
+
+    //기존에 제공하는 인터페이스 오버라이드해서 fetch join 사용
+//    @Override
+//    @EntityGraph(attributePaths = "team")
+//    List<Member> findAll();
+
+    //신규 메서드 생성 후 fetch join 사용
+    @Query("select m from Member m")
+    @EntityGraph(attributePaths = "team")
+    List<Member> findMembersEntityGraph();
+
+    //신규 메서드 체인 생성 후 fetch join 사용
+    @EntityGraph(attributePaths = "team")
+    List<Member> findMembersEntityGraphByAgeGreaterThanEqual(int age);
+
+    //Entity 에 NamedEntityGraph 를 정의해서 사용
+    @EntityGraph("Member.all")
+    List<Member> findMembersNamedEntityGraphByAgeGreaterThanEqual(int age);
+
 }
