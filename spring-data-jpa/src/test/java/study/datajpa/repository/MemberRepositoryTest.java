@@ -418,4 +418,22 @@ class MemberRepositoryTest {
             System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
         }
     }
+
+    @Test
+    void testQueryHint() {
+        //given
+        Member member = new Member("member1", 10);
+        memberRepository.save(member);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        //when
+        //@QueryHints 를 활용하여 hibernate 에서 제공하는 옵션으로 readOnly 로 조회 시 수정은 하지 않음을 지시하여 메모리에 스냅샷을 만들지 않도록 함
+        //따라서 Dirty Checking 하지 않음
+        Member findMember = memberRepository.findReadOnlyByUsername(member.getUsername());
+        findMember.setUsername("member2");
+
+        entityManager.flush();
+    }
 }

@@ -2,6 +2,7 @@ package study.datajpa.repository;
 
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -83,5 +85,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //Entity 에 NamedEntityGraph 를 정의해서 사용
     @EntityGraph("Member.all")
     List<Member> findMembersNamedEntityGraphByAgeGreaterThanEqual(int age);
+
+    //JPA Hint : JPA 쿼리 힌트는 SQL 힌트가 아닌 JPA 구현체에게 제공하는 힌트
+    @QueryHints(
+        value = @QueryHint(name="org.hibernate.readOnly", value = "true")
+    )
+    Member findReadOnlyByUsername(String username);
 
 }
