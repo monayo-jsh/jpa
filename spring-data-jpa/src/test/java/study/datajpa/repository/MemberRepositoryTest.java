@@ -436,4 +436,20 @@ class MemberRepositoryTest {
 
         entityManager.flush();
     }
+
+    @Test
+    void testQueryLock() {
+        //given
+        Member member = new Member("member1", 10);
+        memberRepository.save(member);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        //when
+        //query 끝에 for update 가 붙음으로서 select lock 제공
+        Member findMember = memberRepository.findLockByUsername(member.getUsername());
+
+        findMember.setUsername("member2");
+    }
 }
