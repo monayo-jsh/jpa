@@ -17,7 +17,7 @@ import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     //select method query
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
@@ -97,4 +97,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //select for update
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Member findLockByUsername(String username);
+
 }
