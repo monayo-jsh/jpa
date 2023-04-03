@@ -10,6 +10,12 @@ spring:
       hibernate:
         format_sql: true
 
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 1000
+
   h2:
     console:
       enabled: true
