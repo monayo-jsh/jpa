@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
+import study.datajpa.dto.UsernameOnlyDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
@@ -522,5 +523,55 @@ class MemberRepositoryTest {
         List<Member> members = memberRepository.findAll(example);
 
         Assertions.assertThat(members.size()).isEqualTo(1);
+    }
+
+    @Test
+    void testProjections() {
+        //given
+        Team teamA = new Team("teamA");
+        teamRepository.save(teamA);
+
+        Member m1 = new Member("m1", 10, teamA);
+        Member m2 = new Member("m1", 20, teamA);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        //when
+        List<UsernameOnly> usernames = memberRepository.findProjectionByUsername("m1");
+
+        for(UsernameOnly username : usernames) {
+            System.out.println("username.getUsername() = " + username.getUsername());
+        }
+
+        assertThat(usernames.size()).isEqualTo(2);
+
+        List<UsernameOnlyDto> usernameOnlyDtos = memberRepository.findProjectionDtoByUsername("m1");
+
+        for(UsernameOnlyDto username : usernameOnlyDtos) {
+            System.out.println("username.getUsername() = " + username.getUsername());
+        }
+
+        assertThat(usernames.size()).isEqualTo(2);
+
+        usernameOnlyDtos = memberRepository.findProjectionDtoByUsername("m1", UsernameOnlyDto.class);
+
+        for(UsernameOnlyDto username : usernameOnlyDtos) {
+            System.out.println("username.getUsername() = " + username.getUsername());
+        }
+
+        assertThat(usernames.size()).isEqualTo(2);
+
+        List<NestedClosedProjections> nestedClosedProjections = memberRepository.findProjectionDtoByUsername("m1", NestedClosedProjections.class);
+
+        for(NestedClosedProjections nestedClosedProjection : nestedClosedProjections) {
+            System.out.println("nestedClosedProjection = " + nestedClosedProjection.getUsername());
+            System.out.println("nestedClosedProjection.getTeam().getName() = " + nestedClosedProjection.getTeam().getName());
+        }
+
+        assertThat(usernames.size()).isEqualTo(2);
     }
 }
