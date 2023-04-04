@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -486,5 +489,38 @@ class MemberRepositoryTest {
         System.out.println("findMember.getLastModifiedDate() = " + findMember.getLastModifiedDate());
         System.out.println("findMember.getCreatedBy() = " + findMember.getCreatedBy());
         System.out.println("findMember.getLastModifiedBy() = " + findMember.getLastModifiedBy());
+    }
+
+    @Test
+    void queryByExample() {
+        //given
+        Team teamA = new Team("teamA");
+        teamRepository.save(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        //when
+        //Probe : 필드에 데이터가 있는 실제 도메인 객체
+        //ExampleMatcher : 특정 필드를 일치시키는 상세한 정보 제공, 재사용 가능
+        //Example : Probe 와 ExampleMatcher 로 구성, 쿼리를 생성하는데 사용
+        //조인은 가능하지만 내부 조인만 가능, 외부 조인 안됨
+        Member member = new Member("m1");
+        Team team = new Team("teamA");
+        member.setTeam(team);
+
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("age");
+
+        Example<Member> example = Example.of(member, matcher);
+
+        List<Member> members = memberRepository.findAll(example);
+
+        Assertions.assertThat(members.size()).isEqualTo(1);
     }
 }
